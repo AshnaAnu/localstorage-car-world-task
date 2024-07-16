@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car World</title>
+
+    <!-- Bootstrap cdn  -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+        crossorigin="anonymous"></script>
+</head>
+
+<body>
+    <div>
+        <h1 class="text-center text-primary mt-3">Car World</h1>
+        <div class="row m-5">
+            <div class="col border rounded me-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+                <h3 class="text-center text-primary">Enter Details</h3>
+                <form>
+
+                    <div class="mb-3 ">
+
+                        <input type="text" class="form-control w-100 " id="carBrand" placeholder="Car Brand">
+
+                    </div>
+                    <div class="mb-3">
+
+                        <input type="text" class="form-control w-100 " id="carPrice" placeholder="Price">
+                    </div>
+                    <div class="mb-3">
+
+                        <input type="text" class="form-control w-100 " id="carKey" placeholder="Key">
+                    </div>
+
+                    <div class="text-center"><button type="button" class="btn btn-success mb-3"
+                            onclick="storeRecords()">Store Records</button></div>
+
+                </form>
+            </div>
+            <div class="col border rounded me-3 shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+                <h3 class="text-center text-primary">Enter Key to Retrieve Item</h3>
+                <div class="mb-3">
+
+                    <input type="text" class="form-control w-100 " id="retrieveKey" placeholder="Key">
+                </div>
+
+                <div class="text-center"> <button type="button" class="btn btn-primary mb-3"
+                        onclick="retrieveRecords()">Retrieve Records</button></div>
+                <div id="retrieveDisplay"></div>
+            </div>
+            <div class="col border shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+                <h3 class="text-center text-primary">Enter Key to Delete Item</h3>
+                <div class="mb-3">
+
+                    <input type="text" class="form-control w-100 " id="deleteKey" placeholder="Key">
+                </div>
+                <div class="text-center"><button type="button" class="btn btn-danger mb-3 "
+                        onclick="removeRecords()">Remove Records</button></div>
+
+                <div id="deleteDisplay"></div>
+            </div>
+            <button class="btn btn-primary" onclick="clearAllRecords()">Clear All Records</button>
+        </div>
+
+    </div>
+
+
+    <script>
+        function storeRecords() {
+            const carBrand = document.getElementById('carBrand').value;
+            const carPrice = document.getElementById('carPrice').value;
+            const carKey = document.getElementById('carKey').value;
+
+            if (carBrand && carPrice && carKey) {
+                // Create an object with car brand and price
+                const carRecord = {
+                    carBrand: carBrand,
+                    price: carPrice
+                };
+                localStorage.setItem(carKey, JSON.stringify(carRecord));
+                alert("Record Successfully added")
+
+            }
+            else {
+                alert("please fill all the fields")
+            }
+
+        }
+
+        function retrieveRecords() {
+            const retrieveKey = document.getElementById('retrieveKey').value;
+            const retrieveDisplay = document.getElementById('retrieveDisplay');
+
+            if (retrieveKey) {
+                const record = localStorage.getItem(retrieveKey);
+                if (record) {
+                    const carRecord = JSON.parse(record);
+                    retrieveDisplay.innerHTML = `<p>Car Brand: ${carRecord.carBrand}</p><p>Price: ${carRecord.price}</p>`;
+                } else {
+                    retrieveDisplay.innerHTML = '<p>No record found for the given key.</p>';
+                }
+            } else {
+                alert('Please enter a key to retrieve the record.');
+            }
+        }
+
+        function removeRecords() {
+            const deleteKey = document.getElementById('deleteKey').value;
+            const deleteDisplay = document.getElementById('deleteDisplay');
+
+            if (deleteKey) {
+                const record = localStorage.getItem(deleteKey);
+                if (record) {
+                    localStorage.removeItem(deleteKey);
+                    deleteDisplay.innerHTML = `<p>Record with key "${deleteKey}" has been removed.</p>`;
+                } else {
+                    deleteDisplay.innerHTML = '<p>No record found for the given key.</p>';
+                }
+            } else {
+                alert('Please enter a key to remove the record.');
+            }
+        }
+
+        function clearAllRecords() {
+            localStorage.clear();
+            alert('All records have been cleared.');
+        }
+
+
+    </script>
+
+</body>
+
+</html>
